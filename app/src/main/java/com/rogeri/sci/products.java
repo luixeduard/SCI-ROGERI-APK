@@ -1,18 +1,14 @@
 package com.rogeri.sci;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -53,6 +50,7 @@ public class products extends AppCompatActivity{
     private static TaskBuscar t1;
     private static String url;
     private static TaskRegistro t2;
+    private static TaskCerrar t3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +82,10 @@ public class products extends AppCompatActivity{
                 EditText noNota = (EditText) findViewById(R.id.noNotaET);
                 EditText recep = (EditText) findViewById(R.id.receptorET);
                 if(!ETCantidad.getText().toString().isEmpty()){
-                    if(Integer.parseInt(ETCantidad.getText().toString())>0 && noNota.getText().toString().length()>0 && recep.getText().toString().length()>0 && !agregarCan){
+                    if(Integer.parseInt(ETCantidad.getText().toString())>disponibles && !agregarCan){
+                        ETCantidad.setText(disponibles+"");
+                    }
+                    else if(Integer.parseInt(ETCantidad.getText().toString())>0 && Integer.parseInt(ETCantidad.getText().toString())<disponibles && noNota.getText().toString().length()>0 && recep.getText().toString().length()>0 && !agregarCan){
                         Button BAceptar = (Button) findViewById(R.id.aceptarButton);
                         BAceptar.setBackgroundResource(R.drawable.ic_baseline_done_enable);
                         BAceptar.setEnabled(true);
@@ -100,6 +101,10 @@ public class products extends AppCompatActivity{
                         Button BAceptar = (Button) findViewById(R.id.aceptarButton);
                         BAceptar.setBackgroundResource(R.drawable.ic_baseline_done_disable);
                         BAceptar.setEnabled(false);
+                    }
+                }else{
+                    if(!ETCantidad.isFocused()){
+                        ETCantidad.setText("0");
                     }
                 }
             }
@@ -127,10 +132,11 @@ public class products extends AppCompatActivity{
         TVPrec.setText(precio+"");
         if(image!=null) {
             ImageView IV = (ImageView) findViewById(R.id.imagenProd);
-            IV.setImageBitmap(image);
+            Drawable d = new BitmapDrawable(getResources(), image);
+            IV.setBackground(d);
         }else{
             ImageView IV = (ImageView) findViewById(R.id.imagenProd);
-            IV.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+            IV.setBackground(getResources().getDrawable(R.drawable.ic_baseline_image_24));
         }
         reiniciarObjetos();
     }
@@ -151,6 +157,8 @@ public class products extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
+        t3 = new TaskCerrar();
+        t3.execute();
         Intent resuIntent = new Intent();
         resuIntent.putExtra("Existe",1);
         setResult(99, resuIntent);
@@ -159,6 +167,8 @@ public class products extends AppCompatActivity{
     }
 
     public void returnButton(View v){
+        t3 = new TaskCerrar();
+        t3.execute();
         Intent resuIntent = new Intent();
         resuIntent.putExtra("Existe",1);
         setResult(99, resuIntent);
@@ -182,10 +192,13 @@ public class products extends AppCompatActivity{
         b2.setBackgroundColor(Color.parseColor("#191E6F"));
         agregarCan=false;
         EditText ET = (EditText) findViewById(R.id.valor);
-        int val = Integer.parseInt(ET.getText().toString());
-        if(disponibles<val){
-            contador=disponibles;
-            ET.setText(disponibles+"");
+        String valor = ET.getText().toString();
+        if(valor.length()>0) {
+            int val = Integer.parseInt(valor);
+            if (disponibles < val) {
+                contador = disponibles;
+                ET.setText(disponibles + "");
+            }
         }
         EditText ETreceptor = (EditText) findViewById(R.id.receptorET);
         ETreceptor.setVisibility(View.VISIBLE);
@@ -313,6 +326,18 @@ public class products extends AppCompatActivity{
         LL.setVisibility(View.INVISIBLE);
     }
 
+    class TaskCerrar extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     class TaskBuscar extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
@@ -408,7 +433,6 @@ public class products extends AppCompatActivity{
                     rs.next();
                     nombre =  rs.getString("nombre");
                     descripcion = rs.getString("descripcion");
-                    //intent.putExtra("imagen", (Parcelable) rs.getBlob("imagen"));
                     idInventario = rs.getInt("idInventario");
                     disponibles = rs.getInt("disponibles");
                     precio =  rs.getFloat("precio");

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity ="center"
+    android:layout_gravity="center"
     android:padding="10dp"
     android:background="@drawable/gradiente"
     tools:context=".products">
@@ -153,6 +152,7 @@
                     android:layout_marginRight="10dp"
                     android:background="#FFFFFF"
                     android:inputType="number"
+                    android:selectAllOnFocus="true"
                     android:text="0"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -230,7 +230,7 @@
         android:background="#56191E6F">
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/gradiente"
             android:gravity="top|center"
             android:orientation="vertical">
@@ -259,6 +259,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/colorAccent"
                 android:onClick="aceptarButtonVAP"
                 android:text="Aceptar"
@@ -278,7 +279,7 @@
         android:background="#56191E6F">
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/gradiente"
             android:gravity="top|center"
             android:orientation="vertical">
@@ -306,6 +307,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/colorAccent"
                 android:onClick="aceptarButtonVDP"
                 android:text="Aceptar"
@@ -326,7 +328,7 @@
         android:background="#56191E6F">
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/gradiente"
             android:gravity="top|center"
             android:orientation="vertical">
@@ -343,6 +345,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/colorAccent"
                 android:onClick="aceptarButtonEAP"
                 android:text="Aceptar"
@@ -362,7 +365,7 @@
         android:background="#56191E6F">
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/gradiente"
             android:gravity="top|center"
             android:orientation="vertical">
@@ -379,6 +382,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/colorAccent"
                 android:onClick="aceptarButtonEDP"
                 android:text="Aceptar"
@@ -397,7 +401,7 @@
         tools:layout_editor_absoluteY="10dp">
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:background="#CC9C0505"
             android:gravity="top|center"
             android:orientation="vertical">
@@ -416,6 +420,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="#9C0505"
                 android:onClick="aceptarErrorButton"
                 android:text="Aceptar"
